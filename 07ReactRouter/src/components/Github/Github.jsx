@@ -1,16 +1,13 @@
-import { React, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-function Github(props) {
-  const [URL, setURL] = useState("https://api.github.com/users/TheTypo36");
-  const { name } = useParams();
-  const [data, setData] = useState({});
-  const BaseUrl = "https://api.github.com/users/";
-  useEffect(() => {
-    setURL(BaseUrl + name);
-    fetch(URL)
-      .then((Response) => Response.json())
-      .then((Response) => setData(Response));
-  }, [URL]);
+import { React } from "react";
+import { useLoaderData } from "react-router-dom";
+function Github() {
+  const data = useLoaderData();
+  // useEffect(() => {
+  //   setURL(BaseUrl + name);
+  //   fetch(URL)
+  //     .then((Response) => Response.json())
+  //     .then((Response) => setData(Response));
+  // }, [URL]);
   return (
     <>
       <div className="text-center m-4 bg-gray-600 text-white p-4 text-3xl">
@@ -22,3 +19,8 @@ function Github(props) {
 }
 
 export default Github;
+
+export const githubLoaderInfo = async () => {
+  const response = await fetch("https://api.github.com/users/TheTypo36");
+  return response.json();
+};

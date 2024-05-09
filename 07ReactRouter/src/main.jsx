@@ -13,7 +13,7 @@ import Layout from "./Layout.jsx";
 import Home from "./components/Home/Home.jsx";
 import Contact from "./components/ContactUs/Contact.jsx";
 import User from "./components/User/User.jsx";
-import Github from "./components/Github/Github.jsx";
+import Github, { githubLoaderInfo } from "./components/Github/Github.jsx";
 
 // const router = createBrowserRouter([
 //   {
@@ -42,7 +42,7 @@ const router = createBrowserRouter(
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/user/:id" element={<User />} />
-      <Route path="/github/:name" element={<Github />} />
+      <Route loader ={githubLoaderInfo} path="/github" element={<Github />} />
     </Route>
   )
 );
