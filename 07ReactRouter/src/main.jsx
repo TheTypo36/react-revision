@@ -32,7 +32,8 @@ import Github, { githubLoaderInfo } from "./components/Github/Github.jsx";
 //         path: "/contact",
 //         element: <Contact />,
 //       },
-//     ],
+//     ],5 .
+
 //   },
 // ]);
 const router = createBrowserRouter(
