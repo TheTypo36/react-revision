@@ -1,22 +1,17 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { ThemeProvider } from "./contexts/ThemeContext";
+import ThemeContext, { ThemeProvider } from "./contexts/ThemeContext";
 import ThemeBtn from "./components/ThemeBtn";
 import Card from "./components/Card";
 
 function App() {
-  const [themeMode, setThemeMode] = useState("light");
-
+  const [themeMode, setTheme] = useState("light");
   const lightTheme = () => {
-    setThemeMode("light");
+    setTheme("light");
   };
-
   const darkTheme = () => {
-    setThemeMode("dark");
+    setTheme("dark");
   };
-
-  //actual change in theme
-
   useEffect(() => {
     document.querySelector("html").classList.remove("light", "dark");
     document.querySelector("html").classList.add(themeMode);
