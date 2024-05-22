@@ -1,37 +1,44 @@
-import { useEffect, useState } from "react";
-import "./App.css";
-import { TodoContextProvide } from "./Context";
-import { TodoForm, TodoItem } from "./components";
+import React, { useEffect, useState } from "react";
+import { TodoContextProvider } from "./Context";
+import TodoForm from "./components/TodoForm";
+import TodoItem from "./components/TodoItem";
 
 function App() {
   const [todos, setTodos] = useState([]);
   const addTodo = (todo) => {
-    setTodos((prev) => [...prev, { id: Date.now(), ...todo }]);
+    setTodos((prev) => [{ id: Date.now(), ...todo }, ...prev]);
   };
-  const updateTodo = (todo, id) => {
-    setTodos((prev) => prev.map((item) => (item.id === id ? todo : item)));
+  const updateTodo = (id, todo) => {
+    setTodos((prev) =>
+      prev.map((prevTodo) => (prevTodo.id === id ? todo : prevTodo))
+    );
   };
   const deleteTodo = (id) => {
-    setTodos((prev) => prev.filter((item) => item.id !== id));
+    setTodos((prev) => prev.filter((prevTodo) => prevTodo.id !== id));
   };
   const toggleComplete = (id) => {
     setTodos((prev) =>
-      prev.map((item) =>
-        item.id === id ? !{ ...item, compeleted: !compeleted } : item
+      prev.map((prevTodo) =>
+        prevTodo.id === id
+          ? { ...prevTodo, completed: !prevTodo.completed }
+          : prevTodo
       )
     );
   };
   useEffect(() => {
     const todos = JSON.parse(localStorage.getItem("todos"));
+
     if (todos && todos.length > 0) {
       setTodos(todos);
     }
   }, []);
+
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
+
   return (
-    <TodoContextProvide
+    <TodoContextProvider
       value={{ todos, addTodo, updateTodo, deleteTodo, toggleComplete }}
     >
       <div className="bg-[#172842] min-h-screen py-8">
@@ -44,14 +51,14 @@ function App() {
           </div>
           <div className="flex flex-wrap gap-y-3">
             {todos.map((todo) => (
-              <div className="w-full" key={todo.id}>
+              <div key={todo.id} className="w-full">
                 <TodoItem todo={todo} />
               </div>
             ))}
           </div>
         </div>
       </div>
-    </TodoContextProvide>
+    </TodoContextProvider>
   );
 }
 
