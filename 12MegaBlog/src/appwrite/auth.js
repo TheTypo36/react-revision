@@ -10,6 +10,15 @@ export class AuthService {
       .setProject(config.appwriteProjectId);
 
     this.account = new Account(this.client);
+
+    // this.account
+    //   .get()
+    //   .then((respone) => {
+    //     console.log("got account", respone);
+    //   })
+    //   .catch((error) => {
+    //     console.log("coudn't get the account", error);
+    //   });
   }
   async createAccount({ email, password, name }) {
     try {

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Appwrite Test</title>
+  </head>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/appwrite"></script>
+    <script>
+      const client = new Appwrite.Client();
+      client
+        .setEndpoint("https://cloud.appwrite.io/v1") // Your Appwrite Endpoint
+        .setProject("666eac83002318417b27"); // Your project ID
+
+      const account = new Appwrite.Account(client);
+
+      account.get().then(
+        (response) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    </script>
+  </body>
+</html>
