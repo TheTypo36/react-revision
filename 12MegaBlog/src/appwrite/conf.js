@@ -1,5 +1,5 @@
 import config from "../config/config";
-import { Client, ID, Databases, Storage, Query } from "appwrite";
+import { Client, ID, Databases, Storage, Query, ImageFormat } from "appwrite";
 
 export class Service {
   client = new Client();
@@ -14,6 +14,7 @@ export class Service {
   }
   async createPost({ title, slug, content, featuredImage, status, userId }) {
     try {
+      console.log(userId);
       return await this.databases.createDocument(
         config.appwriteDataBaseId,
         config.appwriteCollectionId,
@@ -112,8 +113,9 @@ export class Service {
     }
   }
   async getFilePreview(fileId) {
+    console.log("filId", fileId);
     try {
-      return await this.bucket.getFilePreview(config.appwriteBucketId, fileId);
+      return this.bucket.getFilePreview(config.appwriteBucketId, fileId, 1000);
     } catch (error) {
       console.log("Appwrite service::GetFilePreview:: error", error);
       throw error;

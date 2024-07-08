@@ -7,24 +7,33 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
 const Login = () => {
+  console.log("in login");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState("");
 
   const login = async (data) => {
+    console.log("in login2");
+
     setError("");
     try {
+      console.log("in login3");
+
       const session = await authService.login(data);
+      console.log("in login4", session);
+
       if (session) {
         const userData = await authService.getCurrentUser();
+        console.log("in login5", userData);
         if (userData) {
           dispatch(authLogin(userData));
+          console.log("in login6");
         }
         navigate("/");
       }
     } catch (error) {
-      setError(error);
+      setError(error.message || "an expected error occured");
     }
   };
   return (
@@ -39,7 +48,7 @@ const Login = () => {
         </div>
         <h2 className="text-center text-2xl font-bold leading-tight"></h2>
         <p className="mt-2 text-center text-base text-black/60">
-          Don&apos;t have any acount?&nbsp:
+          Don&apos;t have any acount?&nbsp;
           <Link
             to="/signUP"
             className="font-medium text-primary transition-all duration-200 hover:underline"
@@ -72,9 +81,7 @@ const Login = () => {
                 required: true,
               })}
             />
-            <Button type="submit" className="w-full">
-              signIn
-            </Button>
+            <Button type="submit" className="w-full" BtnText="Log In" />
           </div>
         </form>
       </div>

@@ -10,42 +10,44 @@ function PostForm({ post }) {
     useForm({
       defaultValues: {
         title: post?.title || "",
-        slug: post?.slug || "",
+        slug: post?.$id || "",
         content: post?.content || "",
-        status: post?.status || "",
+        status: post?.status || "active",
       },
     });
   const navigate = useNavigate();
-  const userData = useSelector((state) => state.userData);
+  const userData = useSelector((state) => state.auth.userData);
+  // console.log("userdata", userData.userData.$id);
 
-  const sumbit = async (data) => {
+  const submit = async (data) => {
     if (post) {
-      const file = data.image[0]
-        ? appwriteService.uploadFile(data.image[0])
-        : null;
-      if (file) {
-        appwriteService.deleteFile(post.featuredImage);
-      }
-      const dpPost = await appwriteService.updatePost(post.$id, {
-        ...data,
-        featuredImage: file ? file.$id : undefined,
-      });
-      if (dpPost) {
-        navigate(`/post/${dbPost.$id}`);
-      }
-    } else {
       const file = data.image[0]
         ? await appwriteService.uploadFile(data.image[0])
         : null;
       if (file) {
+        appwriteService.deleteFile(post.featuredImage);
+      }
+      const dbPost = await appwriteService.updatePost(post.$id, {
+        ...data,
+        featuredImage: file ? file.$id : undefined,
+      });
+      if (dbPost) {
+        navigate(`/post/${dbPost.$id}`);
+      }
+    } else {
+      console.log(data);
+      const file = await appwriteService.uploadFile(data.image[0]);
+
+      if (file) {
         const fileId = file.$id;
         data.featuredImage = fileId;
-        const dpPost = await appwriteService.createPost({
+        const dbPost = await appwriteService.createPost({
+          //  documentId: userData.$id,
           ...data,
-          userId: userData.$id,
+          userId: userData.userData.$id,
         });
-        if (dpPost) {
-          navigate(`/post/${dpPost.$id}`);
+        if (dbPost) {
+          navigate(`/post/${dbPost.$id}`);
         }
       }
     }
@@ -55,7 +57,7 @@ function PostForm({ post }) {
       return value
         .trim()
         .toLowerCase()
-        .replace(/^[a-zA-z\d\s]+/g, "-")
+        .replace(/[^a-zA-Z\d\s]+/g, "-")
         .replace(/\s/g, "-");
     } else {
       return "";
@@ -79,7 +81,7 @@ function PostForm({ post }) {
           label="Title :"
           placeholder="Title"
           className="mb-4"
-          {...register(title, { required: true })}
+          {...register("title", { required: true })}
         />
         <Input
           label="Slug :"
@@ -117,7 +119,7 @@ function PostForm({ post }) {
           </div>
         )}
         <Select
-          option={["active", "inactive"]}
+          options={["active", "inactive"]}
           lable="status"
           className="mb-4"
           {...register("status", { required: true })}
@@ -126,9 +128,8 @@ function PostForm({ post }) {
           type="submit"
           bgColor={post ? "bg-green-500" : undefined}
           className="w-full"
-        >
-          {post ? "Update" : "Submit"}
-        </Button>
+          BtnText={post ? "Update" : "Submit"}
+        />
       </div>
     </form>
   );

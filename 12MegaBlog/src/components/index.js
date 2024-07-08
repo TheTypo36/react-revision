@@ -7,7 +7,7 @@ import Button from "./Button";
 import Input from "./Input";
 import RTE from "./RTE";
 import Login from "./Login";
-import Signup from "../pages/Signup";
+import Signup from "../pages/SignupPage";
 import PostForm from "./post-form/PostForm";
 import AddPost from "../pages/AddPost";
 import AuthLayout from "./AuthLayout";
